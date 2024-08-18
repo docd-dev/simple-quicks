@@ -50,12 +50,17 @@ export default function AppContent() {
       {!activeMode && <TriggerPopup onClick={() => setOpen(!open)} />}
 
       {activeMode && (
-        <ActiveBtn
-          onClick={() => {
-            setOpen(false);
-            setMode(null);
-          }}
-        />
+        <>
+          {/* PANEL */}
+          <div className="fixed bottom-28 right-[2.125rem] bg-white h-[46.063rem] w-[45.875rem] rounded-md"></div>
+
+          <ActiveBtn
+            onClick={() => {
+              setOpen(false);
+              setMode(null);
+            }}
+          />
+        </>
       )}
     </div>
   );
