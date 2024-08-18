@@ -13,7 +13,7 @@ export default function AppContent() {
       {/* TASK */}
       <div
         className={cn(
-          "flex flex-col items-center gap-3.5 translate-x-[138%] -z-[1] opacity-0",
+          "flex flex-col items-center gap-3.5 translate-x-[295%] -z-[1] opacity-0",
           {
             "translate-x-0 opacity-100": open,
           }
@@ -40,7 +40,7 @@ export default function AppContent() {
       {/* CHAT */}
       <div
         className={cn(
-          "flex flex-col items-center gap-3.5 translate-x-[138%] -z-[1] opacity-0",
+          "flex flex-col items-center gap-3.5 translate-x-[150%] -z-[1] opacity-0",
           {
             "translate-x-0 opacity-100": open,
           }
@@ -66,7 +66,7 @@ export default function AppContent() {
 
       {/* TRIGGER */}
       <div
-        className="bg-[#2F80ED] size-[4.25rem] hover:bg-[#2F80ED]/80 flex items-center justify-center rounded-full"
+        className="bg-[#2F80ED] size-[4.25rem] hover:bg-blue-600 flex items-center justify-center rounded-full"
         onClick={() => setOpen(!open)}
       >
         <FeatherIcon />
