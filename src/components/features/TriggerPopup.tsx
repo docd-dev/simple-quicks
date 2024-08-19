@@ -7,7 +7,7 @@ type TriggerPopupProps = {
 export default function TriggerPopup({ onClick }: TriggerPopupProps) {
   return (
     <div
-      className="bg-[#2F80ED] size-[4.25rem] hover:bg-blue-600 flex items-center justify-center rounded-full"
+      className="bg-[#2F80ED] size-[4.25rem] hover:bg-blue-600 flex items-center justify-center rounded-full cursor-pointer"
       onClick={onClick}
     >
       <FeatherIcon />

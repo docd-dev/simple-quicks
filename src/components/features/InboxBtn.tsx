@@ -14,7 +14,7 @@ export default function InboxBtn({ className, onClick }: InboxBtnProps) {
   return (
     <div
       className={cn(
-        "flex flex-col items-center gap-3.5 translate-x-[150%] -z-[1] opacity-0",
+        "flex flex-col items-center gap-3.5 translate-x-[150%] -z-[1] opacity-0 cursor-pointer",
         className
       )}
     >
