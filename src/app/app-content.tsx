@@ -52,7 +52,9 @@ export default function AppContent() {
       {activeMode && (
         <>
           {/* PANEL */}
-          <div className="fixed bottom-28 right-[2.125rem] bg-white h-[46.063rem] w-[45.875rem] rounded-md"></div>
+          <div className="fixed bottom-28 right-[2.125rem] bg-white h-[46.063rem] w-[45.875rem] rounded-md py-6 px-[1.375rem] text-neutral-950">
+            konten
+          </div>
 
           <ActiveBtn
             onClick={() => {
