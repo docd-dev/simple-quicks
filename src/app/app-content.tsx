@@ -76,16 +76,22 @@ export default function AppContent() {
               }
             )}
           >
-            {/* INBOX PANEL */}
-            {!chatRoom && (
-              <MessageList
-                loading={loading}
-                onClick={(chat) => {
-                  setChatRoom(chat);
-                }}
-              />
+            {activeMode === "inbox" && (
+              <>
+                {/* INBOX PANEL */}
+                {!chatRoom && (
+                  <MessageList
+                    loading={loading}
+                    onClick={(chat) => {
+                      setChatRoom(chat);
+                    }}
+                  />
+                )}
+                {chatRoom && <MessageContent />}
+              </>
             )}
-            {chatRoom && <MessageContent />}
+
+            {activeMode === "task" && <div>Task</div>}
           </div>
 
           <ActiveBtn
