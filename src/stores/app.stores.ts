@@ -1,11 +1,12 @@
+import { InboxItem } from "@/app/constants/inbox-list";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 interface AppState {
   mode: string | null;
   setMode: (mode: string | null) => void;
-  msgId: string | null;
-  setMsgId: (msgId: string | null) => void;
+  chatRoom: InboxItem | null;
+  setChatRoom: (chatRoom: InboxItem | null) => void;
   clear: () => void;
 }
 
@@ -15,9 +16,9 @@ export const useAppStore = create<AppState>()(
     (set) => ({
       mode: null,
       setMode: (mode) => set({ mode }),
-      msgId: null,
-      setMsgId: (msgId) => set({ msgId }),
-      clear: () => set({ mode: null, msgId: null }),
+      chatRoom: null,
+      setChatRoom: (chatRoom) => set({ chatRoom }),
+      clear: () => set({ mode: null, chatRoom: null }),
     }),
     { name: "app-quick" }
   )

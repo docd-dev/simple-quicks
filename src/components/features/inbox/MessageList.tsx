@@ -1,12 +1,12 @@
 import ContentLoading from "../ContentLoading";
 import SearchInbox from "./Search";
-import { INBOX_LIST } from "@/app/constants/inbox-list";
+import { INBOX_LIST, InboxItem } from "@/app/constants/inbox-list";
 import MessageCard from "./MessageCard";
 import { cn } from "@/lib/utils";
 
 export type MessageListProps = {
   loading?: boolean;
-  onClick?: (id: string) => void;
+  onClick?: (chat: InboxItem) => void;
 };
 
 export default function MessageList({
@@ -27,7 +27,7 @@ export default function MessageList({
               className={cn({
                 "border-transparent": key === INBOX_LIST.length - 1,
               })}
-              onClick={() => onClick?.(item.id)}
+              onClick={() => onClick?.(item)}
             />
           ))}
         </div>

@@ -13,7 +13,7 @@ import MessageContent from "@/components/features/inbox/MessageContent";
 
 export default function AppContent() {
   const mounted = useMounted();
-  const { mode, setMode, msgId, setMsgId, clear } = useAppStore();
+  const { mode, setMode, chatRoom, setChatRoom, clear } = useAppStore();
   const [open, setOpen] = useState(false);
   const [activeMode, setActiveMode] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -31,8 +31,8 @@ export default function AppContent() {
   }, [mounted, mode]);
 
   useEffect(() => {
-    console.log(msgId);
-  }, [msgId]);
+    console.log(chatRoom);
+  }, [chatRoom]);
 
   return (
     <div className="fixed bottom-7 right-[2.125rem] flex items-end gap-[1.625rem]  *:transition-all *:duration-150">
@@ -72,20 +72,20 @@ export default function AppContent() {
             className={cn(
               "fixed bottom-28 right-0 md:right-[2.125rem] bg-white h-5/6 md:h-[46.063rem] w-full md:w-[45.875rem] rounded-md py-6 px-8 text-neutral-950 flex flex-col flex-1",
               {
-                "p-0": msgId,
+                "p-0": chatRoom,
               }
             )}
           >
             {/* INBOX PANEL */}
-            {!msgId && (
+            {!chatRoom && (
               <MessageList
                 loading={loading}
-                onClick={(id) => {
-                  setMsgId(id);
+                onClick={(chat) => {
+                  setChatRoom(chat);
                 }}
               />
             )}
-            {msgId && <MessageContent />}
+            {chatRoom && <MessageContent />}
           </div>
 
           <ActiveBtn

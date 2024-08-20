@@ -2,7 +2,7 @@ import { ArrowBack, Close } from "@/lib/icon-library";
 import { useAppStore } from "@/stores/app.stores";
 
 export default function MessageHeader() {
-  const { setMsgId, clear } = useAppStore();
+  const { setChatRoom, clear } = useAppStore();
   return (
     <div className="h-[4.594rem] border-b border-[#BDBDBD] flex items-center justify-between px-[1.313rem]">
       <div className="flex flex-1 items-center">
@@ -10,7 +10,7 @@ export default function MessageHeader() {
           fill="currentColor"
           className="text-[#333333] size-6 ml-1 cursor-pointer"
           onClick={() => {
-            setMsgId(null);
+            setChatRoom(null);
           }}
         />
         <div className="flex flex-col ml-4">
