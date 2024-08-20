@@ -7,6 +7,7 @@ import {
 import { formatTime } from "@/lib/datetime";
 import { MoreHorizontal } from "@/lib/icon-library";
 import { cn, userId } from "@/lib/utils";
+import { useAppStore } from "@/stores/app.stores";
 import { useMemo } from "react";
 
 export type MessageDetailCardProps = {
@@ -27,6 +28,7 @@ export default function MessageDetailCard({
   item,
   isUser,
 }: MessageDetailCardProps) {
+  const { chatRoom } = useAppStore();
   const colorMap = useMemo(() => {
     const map: { [key: string]: string[] } = {};
     let colorIndex = 0;
@@ -43,6 +45,8 @@ export default function MessageDetailCard({
 
   const [bgColor, textColor] = isUser
     ? ["bg-[#EEDCFF]", "text-[#9B51E0]"]
+    : chatRoom?.isSupport
+    ? ["bg-[#F8F8F8]", "text-[#2F80ED]"]
     : colorMap[item.sender.id];
 
   return (
@@ -62,7 +66,7 @@ export default function MessageDetailCard({
       >
         <div
           className={cn("mt-1.5 flex justify-start min-w-[50%] max-w-[75%]", {
-            "justify-end": isUser,
+            "justify-end min-w-max": isUser,
           })}
         >
           <div className={cn("p-2.5 rounded-lg text-[#4F4F4F]", bgColor)}>
@@ -71,26 +75,28 @@ export default function MessageDetailCard({
           </div>
         </div>
 
-        <Popover>
-          <PopoverTrigger>
-            <div className="mt-1.5 cursor-pointer">
-              <MoreHorizontal
-                fill="currentColor"
-                className="text-[#4F4F4F] size-4 "
-              />
-            </div>
-          </PopoverTrigger>
-          <PopoverContent className="w-32 rounded-md p-0">
-            <div className="grid divide-y text-base/none">
-              <div className="px-[1.125rem] py-3 text-[#2F80ED] hover:bg-neutral-100 cursor-pointer duration-150">
-                Edit
+        {(!chatRoom?.isSupport || isUser) && (
+          <Popover>
+            <PopoverTrigger>
+              <div className="mt-1.5 cursor-pointer">
+                <MoreHorizontal
+                  fill="currentColor"
+                  className="text-[#4F4F4F] size-4 "
+                />
               </div>
-              <div className="px-[1.125rem] py-3 text-[#EB5757] hover:bg-neutral-100 cursor-pointer duration-150">
-                Delete
+            </PopoverTrigger>
+            <PopoverContent className="w-32 rounded-md p-0">
+              <div className="grid divide-y text-base/none">
+                <div className="px-[1.125rem] py-3 text-[#2F80ED] hover:bg-neutral-100 cursor-pointer duration-150">
+                  Edit
+                </div>
+                <div className="px-[1.125rem] py-3 text-[#EB5757] hover:bg-neutral-100 cursor-pointer duration-150">
+                  Delete
+                </div>
               </div>
-            </div>
-          </PopoverContent>
-        </Popover>
+            </PopoverContent>
+          </Popover>
+        )}
       </div>
     </div>
   );

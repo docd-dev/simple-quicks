@@ -83,3 +83,33 @@ export const MESSAGE_LIST: Message[] = [
     isNew: true,
   },
 ];
+
+export const MESSAGE_SUPPORT_LIST: Message[] = [
+  {
+    id: 1,
+    room_id: "0j1k2l",
+    message:
+      "NHey there. Welcome to your inbox! Contact us for more information and help about anything! We’ll send you a response as soon as possible.",
+    date: "2024-08-21 19:32",
+    reply_id: null,
+    sender: {
+      id: "support",
+      username: "fastvisa",
+      name: "FastVisa Support",
+    },
+    isNew: false,
+  },
+  {
+    id: 2,
+    room_id: "0j1k2l",
+    message: "Hi, I need help with something can you help me ?",
+    date: "2024-08-21 19:32",
+    reply_id: null,
+    sender: {
+      id: "docd",
+      username: "dwiyulianto",
+      name: "Dwi Yulianto",
+    },
+    isNew: false,
+  },
+];
