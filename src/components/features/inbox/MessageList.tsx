@@ -6,9 +6,13 @@ import { cn } from "@/lib/utils";
 
 export type MessageListProps = {
   loading?: boolean;
+  onClick?: (id: string) => void;
 };
 
-export default function MessageList({ loading = true }: MessageListProps) {
+export default function MessageList({
+  loading = true,
+  onClick,
+}: MessageListProps) {
   return (
     <>
       <SearchInbox />
@@ -18,11 +22,12 @@ export default function MessageList({ loading = true }: MessageListProps) {
         <div className="grid grid-cols-1">
           {INBOX_LIST.map((item, key) => (
             <MessageCard
-              key={key}
+              key={item.id}
               metadata={item}
               className={cn({
                 "border-transparent": key === INBOX_LIST.length - 1,
               })}
+              onClick={() => onClick?.(item.id)}
             />
           ))}
         </div>

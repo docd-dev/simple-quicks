@@ -4,6 +4,8 @@ import { persist } from "zustand/middleware";
 interface AppState {
   mode: string | null;
   setMode: (mode: string | null) => void;
+  msgId: string | null;
+  setMsgId: (msgId: string | null) => void;
   clear: () => void;
 }
 
@@ -13,7 +15,9 @@ export const useAppStore = create<AppState>()(
     (set) => ({
       mode: null,
       setMode: (mode) => set({ mode }),
-      clear: () => set({ mode: null }),
+      msgId: null,
+      setMsgId: (msgId) => set({ msgId }),
+      clear: () => set({ mode: null, msgId: null }),
     }),
     { name: "app-quick" }
   )

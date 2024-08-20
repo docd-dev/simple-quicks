@@ -5,9 +5,14 @@ import { cn } from "@/lib/utils";
 export type MessageCardProps = {
   metadata?: InboxItem;
   className?: string;
+  onClick?: () => void;
 };
 
-export default function MessageCard({ metadata, className }: MessageCardProps) {
+export default function MessageCard({
+  metadata,
+  className,
+  onClick,
+}: MessageCardProps) {
   const getFirstLetter = (name: string): string => {
     return name.charAt(0).toUpperCase();
   };
@@ -31,12 +36,17 @@ export default function MessageCard({ metadata, className }: MessageCardProps) {
         </div>
       )}
       <div
-        className={cn("flex flex-col gap-2 ml-[1.063rem]", {
+        className={cn("flex flex-1 flex-col gap-2 ml-[1.063rem]", {
           "gap-0": metadata?.isSupport,
         })}
       >
         <div className="flex items-start gap-4 text-base">
-          <h2 className="font-bold text-[#2F80ED] ">{metadata?.title}</h2>
+          <h2
+            className="font-bold text-[#2F80ED] cursor-pointer hover:text-blue-600 duration-150"
+            onClick={onClick}
+          >
+            {metadata?.title}
+          </h2>
           <span className="text-[#4F4F4F] min-w-max">{metadata?.date}</span>
         </div>
         <div className="flex flex-col gap-1 text-[#4F4F4F]">
@@ -45,7 +55,14 @@ export default function MessageCard({ metadata, className }: MessageCardProps) {
               {metadata?.lastMessage?.name}
             </h6>
           )}
-          <p className="text-sm">{metadata?.lastMessage?.message}</p>
+          <div className="flex items-center justify-between">
+            <p className="text-sm line-clamp-1">
+              {metadata?.lastMessage?.message}
+            </p>
+            {metadata?.new && (
+              <div className="size-[0.625rem] bg-[#EB5757] rounded-full"></div>
+            )}
+          </div>
         </div>
       </div>
     </div>

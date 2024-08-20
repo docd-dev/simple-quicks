@@ -1,4 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-  
+
+@layer components {
+  .custom-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: #ccc transparent;
+  }
+}
