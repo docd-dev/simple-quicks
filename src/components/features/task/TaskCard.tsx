@@ -1,16 +1,26 @@
+import AutoResizeTextarea from "@/components/AutoResizeTextarea";
+import { Datepicker } from "@/components/datepicker";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { ExpandMore, MoreHorizontal } from "@/lib/icon-library";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  EditIcon,
+  ExpandMore,
+  MoreHorizontal,
+  Schedule,
+} from "@/lib/icon-library";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 
 export default function TaskCard() {
   const [openTab, setOpenTab] = useState(false);
   const [isDone, setIsDone] = useState<boolean | "indeterminate">(false);
+  const [date, setDate] = useState<Date>();
+  const [note, setNote] = useState<string>("");
 
   return (
     <div className="py-[1.375rem] border-b border-[#828282] flex flex-col">
@@ -84,7 +94,45 @@ export default function TaskCard() {
         <div className="size-4">
           <span className="sr-only">empty</span>
         </div>
-        <div>TaskContent</div>
+        {/* content */}
+        <div className="flex flex-col flex-1">
+          <div className="flex items-center gap-[1.125rem]">
+            <Schedule
+              fill="currentColor"
+              className={cn("size-5 text-[#4F4F4F] transition-all", {
+                "text-[#2F80ED]": date,
+              })}
+            />
+            <Datepicker onChange={setDate} />
+          </div>
+          <div className="flex items-start gap-[1.125rem] mt-3.5 ">
+            <EditIcon
+              fill="currentColor"
+              className={cn(
+                "size-5 text-[#4F4F4F] transition-all cursor-pointer",
+                {
+                  "text-[#2F80ED]": note,
+                }
+              )}
+              onClick={() => {
+                const textArea = document.getElementById("note");
+                if (textArea) {
+                  textArea.focus();
+                }
+              }}
+            />
+            <AutoResizeTextarea
+              id="note"
+              onChange={(text) => {
+                setNote(text);
+              }}
+              value={note}
+            />
+          </div>
+        </div>
+        <div className="size-4">
+          <span className="sr-only">empty</span>
+        </div>
       </div>
     </div>
   );
