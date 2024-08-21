@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   Popover,
   PopoverContent,
@@ -8,6 +7,7 @@ import {
 import { ExpandMore } from "@/lib/icon-library";
 import { useRef } from "react";
 import ContentLoading from "../ContentLoading";
+import TaskCard from "./TaskCard";
 
 export type TaskContentProps = {
   loading?: boolean;
@@ -63,26 +63,7 @@ export default function TaskContent({ loading = true }: TaskContentProps) {
             ref={taskRef}
             className="h-full overflow-y-auto flex flex-col custom-scroll pb-6"
           >
-            <div className="py-[1.375rem] border-b border-[#828282] flex flex-col">
-              {/* tab */}
-              <div className="flex items-start justify-between">
-                {/* title & checkbox */}
-                <div className="flex items-start gap-[1.375rem]">
-                  <Checkbox className="mt-0.5" />
-                  <p className="text-base font-bold text-[#4F4F4F]">
-                    Close off Case #012920- RODRIGUES, Amiguel
-                  </p>
-                </div>
-                <div></div>
-              </div>
-              {/* konten */}
-              <div className="mt-4 flex gap-[1.375rem]">
-                <div className="size-4">
-                  <span className="sr-only">empty</span>
-                </div>
-                <div>TaskContent</div>
-              </div>
-            </div>
+            <TaskCard />
           </div>
         </div>
       )}
