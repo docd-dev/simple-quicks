@@ -95,7 +95,7 @@ export default function AppContent() {
               </>
             )}
 
-            {activeMode === "task" && <TaskContent />}
+            {activeMode === "task" && <TaskContent loading={loading} />}
           </div>
 
           <ActiveBtn
