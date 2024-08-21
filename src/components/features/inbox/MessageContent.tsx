@@ -52,7 +52,7 @@ export default function MessageContent() {
   );
 
   return (
-    <div className="flex flex-col flex-1 h-full">
+    <section className="flex flex-col flex-1 h-full">
       {/* chat header */}
       <MessageHeader />
       <div className="flex-1 px-5 pt-3.5 overflow-hidden relative">
@@ -90,6 +90,6 @@ export default function MessageContent() {
       </div>
       {/* chat footer and input new message */}
       <MessageFooter />
-    </div>
+    </section>
   );
 }

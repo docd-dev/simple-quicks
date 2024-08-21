@@ -10,6 +10,7 @@ import { useAppStore } from "@/stores/app.stores";
 import { useEffect, useState } from "react";
 import MessageList from "@/components/features/inbox/MessageList";
 import MessageContent from "@/components/features/inbox/MessageContent";
+import TaskContent from "@/components/features/task/TaskContent";
 
 export default function AppContent() {
   const mounted = useMounted();
@@ -24,10 +25,12 @@ export default function AppContent() {
 
     const fetchDone = async () => {
       await sleep(500);
+      setChatRoom(null);
       setLoading(false);
     };
 
     fetchDone();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mounted, mode]);
 
   useEffect(() => {
@@ -73,6 +76,7 @@ export default function AppContent() {
               "fixed bottom-28 right-0 md:right-[2.125rem] bg-white h-5/6 md:h-[46.063rem] w-full md:w-[45.875rem] rounded-md py-6 px-8 text-neutral-950 flex flex-col flex-1",
               {
                 "p-0": chatRoom,
+                "pb-0": activeMode === "task",
               }
             )}
           >
@@ -91,7 +95,7 @@ export default function AppContent() {
               </>
             )}
 
-            {activeMode === "task" && <div>Task</div>}
+            {activeMode === "task" && <TaskContent />}
           </div>
 
           <ActiveBtn

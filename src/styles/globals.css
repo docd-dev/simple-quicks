@@ -8,3 +8,8 @@
     scrollbar-color: #ccc transparent;
   }
 }
+
+.PopoverContent {
+  width: var(--radix-popover-trigger-width);
+  max-height: var(--radix-popover-content-available-height);
+}
