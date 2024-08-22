@@ -1,3 +1,4 @@
+import { Task } from "@/app/constants/task-list";
 import AutoResizeTextarea from "@/components/AutoResizeTextarea";
 import { Datepicker } from "@/components/datepicker";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -6,7 +7,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Textarea } from "@/components/ui/textarea";
+import { timeLeft } from "@/lib/datetime";
 import {
   EditIcon,
   ExpandMore,
@@ -14,13 +15,22 @@ import {
   Schedule,
 } from "@/lib/icon-library";
 import { cn } from "@/lib/utils";
+import { DateTime } from "luxon";
 import { useState } from "react";
 
-export default function TaskCard() {
+interface TaskCardProps {
+  item?: Task;
+}
+
+export default function TaskCard({ item }: TaskCardProps) {
   const [openTab, setOpenTab] = useState(false);
-  const [isDone, setIsDone] = useState<boolean | "indeterminate">(false);
-  const [date, setDate] = useState<Date>();
-  const [note, setNote] = useState<string>("");
+  const [isDone, setIsDone] = useState<boolean | "indeterminate">(
+    item ? item.isCompleted : false
+  );
+  const [date, setDate] = useState<Date | undefined>(
+    item && DateTime.fromISO(item.dueDate).toJSDate()
+  );
+  const [note, setNote] = useState<string>(item?.description || "");
 
   return (
     <div className="py-[1.375rem] border-b border-[#828282] flex flex-col">
@@ -40,13 +50,18 @@ export default function TaskCard() {
               "line-through text-[#828282]": isDone,
             })}
           >
-            Set up documentation report for several Cases : Case 145443, Case
-            192829 and Case 182203
+            {item?.name}
           </p>
         </div>
         <div className="flex items-center justify-end text-[#4F4F4F] min-w-max text-base/none -mt-1">
-          {!isDone && <span className="text-[#EB5757]">2 Days Left</span>}
-          <span className="ml-5">12/06/2021</span>
+          {!isDone && (
+            <span className="text-[#EB5757]">{timeLeft(item?.dueDate!)}</span>
+          )}
+          <span className="ml-5">
+            {item
+              ? DateTime.fromISO(item.dueDate).toFormat("dd/LL/yyyy")
+              : "--"}
+          </span>
           <div
             className="cursor-pointer ml-2.5"
             onClick={() => {
@@ -122,7 +137,7 @@ export default function TaskCard() {
               }}
             />
             <AutoResizeTextarea
-              id="note"
+              id={`note-${item?.id}`}
               onChange={(text) => {
                 setNote(text);
               }}

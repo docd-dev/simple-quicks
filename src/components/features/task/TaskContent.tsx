@@ -8,6 +8,7 @@ import { ExpandMore } from "@/lib/icon-library";
 import { useRef } from "react";
 import ContentLoading from "../ContentLoading";
 import TaskCard from "./TaskCard";
+import { TASK_LIST } from "@/app/constants/task-list";
 
 export type TaskContentProps = {
   loading?: boolean;
@@ -63,7 +64,9 @@ export default function TaskContent({ loading = true }: TaskContentProps) {
             ref={taskRef}
             className="h-full overflow-y-auto flex flex-col custom-scroll pb-6"
           >
-            <TaskCard />
+            {TASK_LIST.map((task, key) => (
+              <TaskCard key={key} item={task} />
+            ))}
           </div>
         </div>
       )}

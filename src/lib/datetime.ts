@@ -16,3 +16,23 @@ export const formatDate = (dateString: string) => {
 
   return date.toFormat("cccc MMMM dd, yyyy");
 };
+
+export const timeLeft = (futureDate: string): string => {
+  const today = DateTime.now();
+  const future = DateTime.fromISO(futureDate);
+  const diff = future.diff(today, ["years", "months", "weeks", "days"]);
+
+  if (diff.years >= 1) {
+    const yearsLeft = Math.ceil(diff.years);
+    return `${yearsLeft} Year${yearsLeft > 1 ? "s" : ""} Left`;
+  } else if (diff.months >= 1) {
+    const monthsLeft = Math.ceil(diff.months);
+    return `${monthsLeft} Month${monthsLeft > 1 ? "s" : ""} Left`;
+  } else if (diff.weeks >= 1) {
+    const weeksLeft = Math.ceil(diff.weeks);
+    return `${weeksLeft} Week${weeksLeft > 1 ? "s" : ""} Left`;
+  } else {
+    const daysLeft = Math.ceil(diff.days);
+    return `${daysLeft} Day${daysLeft > 1 ? "s" : ""} Left`;
+  }
+};
