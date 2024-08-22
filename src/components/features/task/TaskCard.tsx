@@ -100,9 +100,9 @@ export default function TaskCard({ item }: TaskCardProps) {
       {/* konten */}
       <div
         className={cn(
-          "flex gap-[1.375rem] transition-all duration-150 h-0 opacity-0",
+          "flex gap-[1.375rem] transition-all duration-150 h-0 opacity-0 -z-[1]",
           {
-            "h-auto opacity-100 mt-4 ease-out": openTab,
+            "h-auto opacity-100 mt-4 ease-out z-auto": openTab,
           }
         )}
       >
