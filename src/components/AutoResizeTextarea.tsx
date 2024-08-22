@@ -24,7 +24,7 @@ const AutoResizeTextarea: React.FC<AutoResizeTextareaProps> = ({
       textarea.style.height = "auto"; // Reset height to auto to calculate scrollHeight correctly
       textarea.style.height = `${Math.min(
         textarea.scrollHeight,
-        maxRows * 24
+        maxRows * 28
       )}px`; // Adjust height based on scrollHeight and maxRows
     }
   }, [value, maxRows]);

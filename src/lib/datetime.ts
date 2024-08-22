@@ -17,9 +17,17 @@ export const formatDate = (dateString: string) => {
   return date.toFormat("cccc MMMM dd, yyyy");
 };
 
-export const timeLeft = (futureDate: string): string => {
+export const timeLeft = (
+  futureDate: any,
+  type: "ISO" | "JSDate" = "ISO"
+): string => {
   const today = DateTime.now();
-  const future = DateTime.fromISO(futureDate);
+  let future;
+  if (type === "JSDate") {
+    future = DateTime.fromJSDate(futureDate);
+  } else {
+    future = DateTime.fromISO(futureDate);
+  }
   const diff = future.diff(today, ["years", "months", "weeks", "days"]);
 
   if (diff.years >= 1) {

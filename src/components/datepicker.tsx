@@ -11,13 +11,21 @@ import {
 } from "@/components/ui/popover";
 import { CalendarIcon } from "@/lib/icon-library";
 import { DateTime } from "luxon";
+import useMounted from "@/hooks/useMounted";
 
 export interface DatepickerProps {
   onChange?: (date: Date | undefined) => void;
+  value?: Date | undefined;
 }
 
-export function Datepicker({ onChange }: DatepickerProps) {
+export function Datepicker({ onChange, value }: DatepickerProps) {
+  const mounted = useMounted();
   const [date, setDate] = React.useState<Date>();
+
+  React.useEffect(() => {
+    if (!mounted) return;
+    setDate(value);
+  }, [mounted, value]);
 
   return (
     <Popover>

@@ -5,10 +5,11 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ExpandMore } from "@/lib/icon-library";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import ContentLoading from "../ContentLoading";
 import TaskCard from "./TaskCard";
 import { TASK_LIST } from "@/app/constants/task-list";
+import TaskCreate from "./TaskCreate";
 
 export type TaskContentProps = {
   loading?: boolean;
@@ -16,6 +17,7 @@ export type TaskContentProps = {
 
 export default function TaskContent({ loading = true }: TaskContentProps) {
   const taskRef = useRef<HTMLDivElement>(null);
+  const [createItem, setCreateItem] = useState<Array<number>>([]);
 
   return (
     <section className="flex flex-col flex-1 h-full">
@@ -52,7 +54,12 @@ export default function TaskContent({ loading = true }: TaskContentProps) {
           </PopoverContent>
         </Popover>
 
-        <Button size={"lg"} className="min-h-10 font-bold text-base px-4">
+        <Button
+          type="button"
+          size={"lg"}
+          className="min-h-10 font-bold text-base px-4"
+          onClick={() => setCreateItem((createItem) => [...createItem, 1])}
+        >
           New Task
         </Button>
       </div>
@@ -66,6 +73,18 @@ export default function TaskContent({ loading = true }: TaskContentProps) {
           >
             {TASK_LIST.map((task, key) => (
               <TaskCard key={key} item={task} />
+            ))}
+
+            {createItem.map((item, key) => (
+              <TaskCreate
+                key={key}
+                id={`create_${key}`}
+                onDelete={() =>
+                  setCreateItem((createItem) =>
+                    createItem.filter((_, i) => i !== key)
+                  )
+                }
+              />
             ))}
           </div>
         </div>

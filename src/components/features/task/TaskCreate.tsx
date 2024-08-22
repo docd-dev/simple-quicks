@@ -1,7 +1,7 @@
-import { Task } from "@/app/constants/task-list";
 import AutoResizeTextarea from "@/components/AutoResizeTextarea";
 import { Datepicker } from "@/components/datepicker";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
 import {
   Popover,
   PopoverContent,
@@ -15,53 +15,47 @@ import {
   Schedule,
 } from "@/lib/icon-library";
 import { cn } from "@/lib/utils";
+import { PopoverClose } from "@radix-ui/react-popover";
 import { DateTime } from "luxon";
 import { useState } from "react";
 
-interface TaskCardProps {
-  item?: Task;
-}
+type TaskCreateProps = {
+  id: string;
+  onDelete?: () => void;
+};
 
-export default function TaskCard({ item }: TaskCardProps) {
+export default function TaskCreate({ id, onDelete }: TaskCreateProps) {
   const [openTab, setOpenTab] = useState(false);
-  const [isDone, setIsDone] = useState<boolean | "indeterminate">(
-    item ? item.isCompleted : false
-  );
-  const [date, setDate] = useState<Date | undefined>(
-    item && DateTime.fromISO(item.dueDate).toJSDate()
-  );
-  const [note, setNote] = useState<string>(item?.description || "");
+  const [isDone, setIsDone] = useState<boolean | "indeterminate">(false);
+  const [date, setDate] = useState<Date | undefined>();
+  const [note, setNote] = useState<string>("");
 
   return (
     <div className="py-[1.375rem] border-b border-[#828282] flex flex-col">
       {/* tab */}
       <div className="flex items-start justify-between">
         {/* title & checkbox */}
-        <div className="flex items-start gap-[1.375rem]">
+        <div className="flex items-center gap-[1.375rem]">
           <Checkbox
-            className="mt-1"
             onCheckedChange={(checked) => {
               setIsDone(checked);
             }}
             checked={isDone}
           />
-          <p
-            className={cn("text-base font-bold text-[#4F4F4F] max-w-[22rem]", {
-              "line-through text-[#828282]": isDone,
-            })}
-          >
-            {item?.name}
-          </p>
+          <Input
+            className="focus-visible:ring-offset-0 focus-visible:ring-0 focus-visible:outline-none p-3.5 border-[#828282] placeholder:text-[#4F4F4F] text-base/none text-[#4F4F4F] w-80"
+            placeholder="Type Task Title"
+          />
         </div>
         <div className="flex items-center justify-end text-[#4F4F4F] min-w-max text-base/none -mt-1">
           {!isDone && date && (
             <span className="text-[#EB5757]">{timeLeft(date, "JSDate")}</span>
           )}
-          <span className="ml-5">
-            {item && date
-              ? DateTime.fromJSDate(date).toFormat("dd/LL/yyyy")
-              : "--"}
-          </span>
+          {date && (
+            <span className="ml-5">
+              {DateTime.fromJSDate(date).toFormat("dd/LL/yyyy")}
+            </span>
+          )}
           <div
             className="cursor-pointer ml-2.5"
             onClick={() => {
@@ -89,9 +83,14 @@ export default function TaskCard({ item }: TaskCardProps) {
               className="w-32 rounded-md p-0 border-[#828282] border"
               align="end"
             >
-              <div className="px-[1.125rem] py-3 text-[#EB5757] hover:bg-neutral-100 cursor-pointer duration-150 rounded-md">
-                Delete
-              </div>
+              <PopoverClose asChild>
+                <div
+                  className="px-[1.125rem] py-3 text-[#EB5757] hover:bg-neutral-100 cursor-pointer duration-150 rounded-md"
+                  onClick={onDelete}
+                >
+                  Delete
+                </div>
+              </PopoverClose>
             </PopoverContent>
           </Popover>
         </div>
@@ -137,7 +136,7 @@ export default function TaskCard({ item }: TaskCardProps) {
               }}
             />
             <AutoResizeTextarea
-              id={`note-${item?.id}`}
+              id={`create-${id}`}
               onChange={(text) => {
                 setNote(text);
               }}
