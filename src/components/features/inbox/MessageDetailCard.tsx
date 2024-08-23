@@ -1,4 +1,4 @@
-import { Message, MESSAGE_LIST } from "@/app/constants/message-list";
+import { Message } from "@/app/constants/message-list";
 import {
   Popover,
   PopoverContent,
@@ -13,6 +13,7 @@ import { useMemo } from "react";
 export type MessageDetailCardProps = {
   item: Message;
   isUser?: boolean;
+  list: Message[];
 };
 
 const COLORS = [
@@ -27,13 +28,14 @@ const COLORS = [
 export default function MessageDetailCard({
   item,
   isUser,
+  list,
 }: MessageDetailCardProps) {
   const { chatRoom } = useAppStore();
   const colorMap = useMemo(() => {
     const map: { [key: string]: string[] } = {};
     let colorIndex = 0;
 
-    MESSAGE_LIST.forEach((msg) => {
+    list.forEach((msg) => {
       if (!map[msg.sender.id] && msg.sender.id !== userId) {
         map[msg.sender.id] = COLORS[colorIndex % COLORS.length];
         colorIndex++;
@@ -41,6 +43,7 @@ export default function MessageDetailCard({
     });
 
     return map;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [bgColor, textColor] = isUser
@@ -66,7 +69,7 @@ export default function MessageDetailCard({
       >
         <div
           className={cn("mt-1.5 flex justify-start min-w-[50%] max-w-[75%]", {
-            "justify-end min-w-max": isUser,
+            "justify-end": isUser,
           })}
         >
           <div className={cn("p-2.5 rounded-lg text-[#4F4F4F]", bgColor)}>

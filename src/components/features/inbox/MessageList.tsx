@@ -5,7 +5,7 @@ import MessageCard from "./MessageCard";
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import useMounted from "@/hooks/useMounted";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export type MessageListProps = {
   loading?: boolean;
@@ -34,6 +34,12 @@ export default function MessageList({
     queryFn: () => fetchData(),
     enabled: mounted,
   });
+  const [items, setItems] = useState<InboxItem[]>([]);
+
+  useEffect(() => {
+    if (!mounted) return;
+    setItems(inbox || []);
+  }, [mounted, inbox]);
 
   return (
     <>
@@ -42,7 +48,7 @@ export default function MessageList({
         <ContentLoading text="Loading Chats ..." />
       ) : (
         <div className="grid grid-cols-1">
-          {(inbox || [])
+          {items
             .filter((item) =>
               item.title.toLowerCase().includes(keyword.toLowerCase())
             )

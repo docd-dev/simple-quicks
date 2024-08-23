@@ -1,21 +1,43 @@
-import {
-  MESSAGE_LIST,
-  MESSAGE_SUPPORT_LIST,
-} from "@/app/constants/message-list";
+import { Message } from "@/app/constants/message-list";
 import MessageDetailCard from "./MessageDetailCard";
 import { userId } from "@/lib/utils";
 import { DateDivider, NewMessageDivider } from "./Divider";
-import { Fragment, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { DateTime } from "luxon";
 import MessageHeader from "./MessageHeader";
 import useScrollPosition from "@/hooks/useScrollPosition";
 import { useAppStore } from "@/stores/app.stores";
 import MessageFooter from "./MessageFooter";
+import useMounted from "@/hooks/useMounted";
+import { useQuery } from "@tanstack/react-query";
+import ContentLoading from "../ContentLoading";
 
-export default function MessageContent() {
+interface MessageContentProps {}
+
+const fetchData = async (roomId: string) => {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/messages`);
+
+    const res: Message[] = await response.json();
+    return res.filter((item) => item.room_id === roomId);
+  } catch (error) {
+    return [];
+  }
+};
+
+export default function MessageContent({}: MessageContentProps) {
+  const mounted = useMounted();
   const chatRef = useRef<HTMLDivElement>(null);
   const [isAtBottom, setIsAtBottom] = useState(false);
   const { chatRoom } = useAppStore();
+
+  const { data: chat, isLoading } = useQuery({
+    queryKey: ["chatList", chatRoom?.id],
+    queryFn: () => fetchData(chatRoom?.id!),
+    enabled: mounted && !!chatRoom?.id,
+  });
+
+  const [items, setItems] = useState<Message[]>([]);
 
   let tempDate = "";
   const setTempDate = (date: string) => {
@@ -35,6 +57,16 @@ export default function MessageContent() {
     });
   };
 
+  useEffect(() => {
+    if (!mounted) return;
+    scrollToBottom(chatRef.current);
+  }, [mounted]);
+
+  useEffect(() => {
+    if (!mounted) return;
+    setItems(chat || []);
+  }, [mounted, chat]);
+
   // HOOK FOR SCROLL EVENT
   useScrollPosition(
     chatRef,
@@ -53,43 +85,48 @@ export default function MessageContent() {
 
   return (
     <section className="flex flex-col flex-1 h-full">
-      {/* chat header */}
-      <MessageHeader />
-      <div className="flex-1 px-5 pt-3.5 overflow-hidden relative">
-        {/* chat container */}
-        <div
-          ref={chatRef}
-          className="h-full overflow-y-auto px-2 flex flex-col custom-scroll"
-        >
-          {(chatRoom?.isSupport ? MESSAGE_SUPPORT_LIST : MESSAGE_LIST).map(
-            (item, key) => (
-              <Fragment key={key}>
-                {tempDate !==
-                  DateTime.fromSQL(item.date).toFormat("dd LLLL yyyy") &&
-                  key !== 0 && <DateDivider date={item.date} />}
-                {setTempDate(item.date)}
-                {item.isNew && <NewMessageDivider />}
-                <MessageDetailCard
-                  item={item}
-                  isUser={item.sender.id === userId}
-                />
-              </Fragment>
-            )
-          )}
-        </div>
+      {isLoading ? (
+        <ContentLoading text="Loading Chat List ..." />
+      ) : (
+        <>
+          {/* chat header */}
+          <MessageHeader />
+          <div className="flex-1 px-5 pt-3.5 overflow-hidden relative">
+            {/* chat container */}
+            <div
+              ref={chatRef}
+              className="h-full overflow-y-auto px-2 flex flex-col custom-scroll"
+            >
+              {items.map((item, key) => (
+                <Fragment key={key}>
+                  {tempDate !==
+                    DateTime.fromSQL(item.date).toFormat("dd LLLL yyyy") &&
+                    key !== 0 && <DateDivider date={item.date} />}
+                  {setTempDate(item.date)}
+                  {item.isNew && <NewMessageDivider />}
+                  <MessageDetailCard
+                    item={item}
+                    isUser={item.sender.id === userId}
+                    list={items}
+                  />
+                </Fragment>
+              ))}
+            </div>
 
-        {/* scroll to new message and dissapper after reach bottom */}
-        {!isAtBottom && !chatRoom?.isSupport && (
-          <div
-            className="absolute bottom-0 left-1/2 -translate-x-1/2 px-3 py-2 rounded-[0.313rem] bg-[#E9F3FF] text-[#2F80ED] font-bold cursor-pointer hover:bg-blue-100 duration-150"
-            onClick={() => scrollToBottom(chatRef.current, "smooth")}
-          >
-            New Message
+            {/* scroll to new message and dissapper after reach bottom */}
+            {!isAtBottom && !chatRoom?.isSupport && (
+              <div
+                className="absolute bottom-0 left-1/2 -translate-x-1/2 px-3 py-2 rounded-[0.313rem] bg-[#E9F3FF] text-[#2F80ED] font-bold cursor-pointer hover:bg-blue-100 duration-150"
+                onClick={() => scrollToBottom(chatRef.current, "smooth")}
+              >
+                New Message
+              </div>
+            )}
           </div>
-        )}
-      </div>
-      {/* chat footer and input new message */}
-      <MessageFooter />
+          {/* chat footer and input new message */}
+          <MessageFooter />
+        </>
+      )}
     </section>
   );
 }
