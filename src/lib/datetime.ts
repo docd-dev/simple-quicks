@@ -20,19 +20,24 @@ export const formatDate = (dateString: string) => {
 export const timeLeft = (
   futureDate: any,
   type: "ISO" | "JSDate" = "ISO"
-): string => {
-  const today = DateTime.now();
+): string | null => {
+  const today = DateTime.now().startOf("day");
   let future;
 
   if (type === "JSDate") {
-    future = DateTime.fromJSDate(futureDate);
+    future = DateTime.fromJSDate(futureDate).startOf("day");
   } else {
-    future = DateTime.fromISO(futureDate);
+    future = DateTime.fromISO(futureDate).startOf("day");
   }
 
   // Check if the future date is before today
   if (future < today) {
     return "Overdue";
+  }
+
+  // If it's the same day, return null
+  if (future.equals(today)) {
+    return null;
   }
 
   const diff = future.diff(today, ["years", "months", "weeks", "days"]);

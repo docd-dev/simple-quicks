@@ -19,9 +19,7 @@ export type TaskContentProps = {
 
 const fetchData = async () => {
   try {
-    const response = await fetch(
-      `https://my-json-server.typicode.com/docd-dev/quick-db/tasks`
-    );
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/tasks`);
 
     const res: Task[] = await response.json();
     return res;
