@@ -25,7 +25,7 @@ type TaskCreateProps = {
 };
 
 export default function TaskCreate({ id, onDelete }: TaskCreateProps) {
-  const [openTab, setOpenTab] = useState(false);
+  const [openTab, setOpenTab] = useState(true);
   const [isDone, setIsDone] = useState<boolean | "indeterminate">(false);
   const [date, setDate] = useState<Date | undefined>();
   const [note, setNote] = useState<string>("");

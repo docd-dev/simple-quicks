@@ -23,11 +23,18 @@ export const timeLeft = (
 ): string => {
   const today = DateTime.now();
   let future;
+
   if (type === "JSDate") {
     future = DateTime.fromJSDate(futureDate);
   } else {
     future = DateTime.fromISO(futureDate);
   }
+
+  // Check if the future date is before today
+  if (future < today) {
+    return "Overdue";
+  }
+
   const diff = future.diff(today, ["years", "months", "weeks", "days"]);
 
   if (diff.years >= 1) {

@@ -5,19 +5,46 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ExpandMore } from "@/lib/icon-library";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ContentLoading from "../ContentLoading";
 import TaskCard from "./TaskCard";
-import { TASK_LIST } from "@/app/constants/task-list";
+import { Task } from "@/app/constants/task-list";
 import TaskCreate from "./TaskCreate";
+import useMounted from "@/hooks/useMounted";
+import { useQuery } from "@tanstack/react-query";
 
 export type TaskContentProps = {
   loading?: boolean;
 };
 
+const fetchData = async () => {
+  try {
+    const response = await fetch(
+      `https://my-json-server.typicode.com/docd-dev/quick-db/tasks`
+    );
+
+    const res: Task[] = await response.json();
+    return res;
+  } catch (error) {
+    return [];
+  }
+};
+
 export default function TaskContent({ loading = true }: TaskContentProps) {
+  const mounted = useMounted();
   const taskRef = useRef<HTMLDivElement>(null);
   const [createItem, setCreateItem] = useState<Array<number>>([]);
+  const [items, setItems] = useState<Task[]>([]);
+  const { data: tasks, isLoading } = useQuery({
+    queryKey: ["tasks"],
+    queryFn: () => fetchData(),
+    enabled: mounted,
+  });
+
+  useEffect(() => {
+    if (!mounted) return;
+    setItems(tasks!);
+  }, [mounted, tasks]);
 
   return (
     <section className="flex flex-col flex-1 h-full">
@@ -63,7 +90,7 @@ export default function TaskContent({ loading = true }: TaskContentProps) {
           New Task
         </Button>
       </div>
-      {loading ? (
+      {loading || isLoading ? (
         <ContentLoading text="Loading Task List ..." />
       ) : (
         <div className="flex-1 overflow-hidden relative">
@@ -71,8 +98,14 @@ export default function TaskContent({ loading = true }: TaskContentProps) {
             ref={taskRef}
             className="h-full overflow-y-auto flex flex-col custom-scroll pb-6"
           >
-            {TASK_LIST.map((task, key) => (
-              <TaskCard key={key} item={task} />
+            {(items || []).map((task, key) => (
+              <TaskCard
+                key={key}
+                item={task}
+                onDelete={() =>
+                  setItems((oldItem) => oldItem.filter((_, i) => i !== key))
+                }
+              />
             ))}
 
             {createItem.map((item, key) => (

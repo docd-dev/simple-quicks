@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Lato } from "next/font/google";
 import "./../styles/globals.css";
 import { cn } from "@/lib/utils";
+import Providers from "./_provider/Providers";
 
 const lato = Lato({
   subsets: ["latin"],
@@ -20,7 +21,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn("bg-neutral-700", lato.className)}>{children}</body>
+      <body className={cn("bg-neutral-700", lato.className)}>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }

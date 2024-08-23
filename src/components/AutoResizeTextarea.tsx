@@ -13,7 +13,7 @@ const AutoResizeTextarea: React.FC<AutoResizeTextareaProps> = ({
   id,
   value,
   onChange,
-  rows = 1,
+  rows = 2,
   maxRows = 10,
 }) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);

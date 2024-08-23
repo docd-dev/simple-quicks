@@ -15,14 +15,16 @@ import {
   Schedule,
 } from "@/lib/icon-library";
 import { cn } from "@/lib/utils";
+import { PopoverClose } from "@radix-ui/react-popover";
 import { DateTime } from "luxon";
 import { useState } from "react";
 
 interface TaskCardProps {
   item?: Task;
+  onDelete?: () => void;
 }
 
-export default function TaskCard({ item }: TaskCardProps) {
+export default function TaskCard({ item, onDelete }: TaskCardProps) {
   const [openTab, setOpenTab] = useState(false);
   const [isDone, setIsDone] = useState<boolean | "indeterminate">(
     item ? item.isCompleted : false
@@ -89,9 +91,14 @@ export default function TaskCard({ item }: TaskCardProps) {
               className="w-32 rounded-md p-0 border-[#828282] border"
               align="end"
             >
-              <div className="px-[1.125rem] py-3 text-[#EB5757] hover:bg-neutral-100 cursor-pointer duration-150 rounded-md">
-                Delete
-              </div>
+              <PopoverClose asChild>
+                <div
+                  className="px-[1.125rem] py-3 text-[#EB5757] hover:bg-neutral-100 cursor-pointer duration-150 rounded-md"
+                  onClick={onDelete}
+                >
+                  Delete
+                </div>
+              </PopoverClose>
             </PopoverContent>
           </Popover>
         </div>
@@ -130,7 +137,7 @@ export default function TaskCard({ item }: TaskCardProps) {
                 }
               )}
               onClick={() => {
-                const textArea = document.getElementById("note");
+                const textArea = document.getElementById(`note-${item?.id}`);
                 if (textArea) {
                   textArea.focus();
                 }

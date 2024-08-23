@@ -34,16 +34,16 @@ function Calendar({
         table: "w-full border-collapse space-y-1",
         head_row: "flex",
         head_cell:
-          "text-neutral-500 rounded-md w-9 font-normal text-[0.8rem] dark:text-neutral-400",
+          "text-neutral-500 rounded-md w-9 font-bold text-sm dark:text-[#4F4F4F]",
         row: "flex w-full mt-2",
-        cell: "h-9 w-9 text-center text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-neutral-100/50 [&:has([aria-selected])]:bg-neutral-100 first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20 dark:[&:has([aria-selected].day-outside)]:bg-neutral-800/50 dark:[&:has([aria-selected])]:bg-neutral-800",
+        cell: "h-9 w-9 text-center text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-neutral-100/50 [&:has([aria-selected])]:bg-transparent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20 dark:[&:has([aria-selected].day-outside)]:bg-neutral-800/50 dark:[&:has([aria-selected])]:bg-neutral-800",
         day: cn(
           buttonVariants({ variant: "ghost" }),
-          "h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+          "h-9 w-9 p-0 font-normal aria-selected:opacity-100 hover:bg-transparent hover:border hover:rounded-full hover:border-[#2F80ED]"
         ),
         day_range_end: "day-range-end",
         day_selected:
-          "bg-neutral-900 text-neutral-50 hover:bg-neutral-900 hover:text-neutral-50 focus:bg-neutral-900 focus:text-neutral-50 dark:bg-neutral-50 dark:text-neutral-900 dark:hover:bg-neutral-50 dark:hover:text-neutral-900 dark:focus:bg-neutral-50 dark:focus:text-neutral-900",
+          "bg-transparent text-[#4F4F4F] hover:bg-transparent hover:text-neutral-50 focus:bg-transparent focus:text-[#4F4F4F] dark:bg-transparent dark:text[#4F4F4F] dark:hover:bg-transparent dark:hover:text-[#4F4F4F] dark:focus:bg-transparent dark:focus:text-[#4F4F4F] border !rounded-full border-[#2F80ED]",
         day_today:
           "bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-50",
         day_outside:
