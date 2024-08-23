@@ -5,6 +5,7 @@ import MessageCard from "./MessageCard";
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import useMounted from "@/hooks/useMounted";
+import { useState } from "react";
 
 export type MessageListProps = {
   loading?: boolean;
@@ -26,6 +27,7 @@ export default function MessageList({
   loading = true,
   onClick,
 }: MessageListProps) {
+  const [keyword, setKeyword] = useState("");
   const mounted = useMounted();
   const { data: inbox, isLoading } = useQuery({
     queryKey: ["inbox"],
@@ -35,21 +37,25 @@ export default function MessageList({
 
   return (
     <>
-      <SearchInbox />
+      <SearchInbox onChange={(e) => setKeyword(e.target.value)} />
       {loading || isLoading ? (
         <ContentLoading text="Loading Chats ..." />
       ) : (
         <div className="grid grid-cols-1">
-          {(inbox || []).map((item, key) => (
-            <MessageCard
-              key={item.id}
-              metadata={item}
-              className={cn({
-                "border-transparent": key === INBOX_LIST.length - 1,
-              })}
-              onClick={() => onClick?.(item)}
-            />
-          ))}
+          {(inbox || [])
+            .filter((item) =>
+              item.title.toLowerCase().includes(keyword.toLowerCase())
+            )
+            .map((item, key) => (
+              <MessageCard
+                key={item.id}
+                metadata={item}
+                className={cn({
+                  "border-transparent": key === INBOX_LIST.length - 1,
+                })}
+                onClick={() => onClick?.(item)}
+              />
+            ))}
         </div>
       )}
     </>
