@@ -8,6 +8,7 @@ import { formatTime } from "@/lib/datetime";
 import { MoreHorizontal } from "@/lib/icon-library";
 import { cn, userId } from "@/lib/utils";
 import { useAppStore } from "@/stores/app.stores";
+import { PopoverClose } from "@radix-ui/react-popover";
 import { useMemo } from "react";
 
 export type MessageDetailCardProps = {
@@ -30,7 +31,7 @@ export default function MessageDetailCard({
   isUser,
   list,
 }: MessageDetailCardProps) {
-  const { chatRoom } = useAppStore();
+  const { chatRoom, setReplyId } = useAppStore();
   const colorMap = useMemo(() => {
     const map: { [key: string]: string[] } = {};
     let colorIndex = 0;
@@ -103,9 +104,16 @@ export default function MessageDetailCard({
                   <div className="px-[1.125rem] py-3 text-[#2F80ED] hover:bg-neutral-100 cursor-pointer duration-150">
                     Share
                   </div>
-                  <div className="px-[1.125rem] py-3 text-[#2F80ED] hover:bg-neutral-100 cursor-pointer duration-150">
-                    Reply
-                  </div>
+                  <PopoverClose className="text-left">
+                    <div
+                      className="px-[1.125rem] py-3 text-[#2F80ED] hover:bg-neutral-100 cursor-pointer duration-150"
+                      onClick={() => {
+                        setReplyId(item);
+                      }}
+                    >
+                      Reply
+                    </div>
+                  </PopoverClose>
                 </div>
               )}
             </PopoverContent>

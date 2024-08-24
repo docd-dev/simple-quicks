@@ -1,13 +1,19 @@
 import AutoResizeTextarea from "@/components/AutoResizeTextarea";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { Close } from "@/lib/icon-library";
+import { cn } from "@/lib/utils";
 import { useAppStore } from "@/stores/app.stores";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function MessageFooter() {
-  const { chatRoom } = useAppStore();
+  const { chatRoom, replyId, setReplyId } = useAppStore();
   const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    console.log(replyId);
+  }, [replyId]);
 
   return (
     <div className="p-5 pt-6">
@@ -27,15 +33,38 @@ export default function MessageFooter() {
           </p>
         </div>
       )}
+
       <div className="flex items-end gap-3.5">
-        <AutoResizeTextarea
-          id="messageInput"
-          value={message}
-          onChange={setMessage}
-          className="ml-0 px-4 py-3 border-[#828282] border"
-          rows={1}
-          placeholder="Type a new message"
-        />
+        <div className="flex flex-col flex-1">
+          {replyId && (
+            <div className="bg-[#F2F2F2] px-4 py-3 border border-[#828282] rounded-t-md relative">
+              <div
+                className="absolute right-4 top-3 cursor-pointer"
+                onClick={() => {
+                  setReplyId(null);
+                }}
+              >
+                <Close fill="currentColor" className="size-3 text-[#4F4F4F]" />
+              </div>
+              <div className="flex flex-col">
+                <h6 className="text-sm text-[#4F4F4F] font-bold">
+                  Replying to {replyId.sender.name}
+                </h6>
+                <p className="text-[#4F4F4F] mt-2">{replyId.message}</p>
+              </div>
+            </div>
+          )}
+          <AutoResizeTextarea
+            id="messageInput"
+            value={message}
+            onChange={setMessage}
+            className={cn("ml-0 px-4 py-3 border-[#828282] border", {
+              "rounded-t-none border-t-0": replyId,
+            })}
+            rows={1}
+            placeholder="Type a new message"
+          />
+        </div>
         <Button size={"lg"} className="min-h-[3.125rem] font-bold text-base">
           Send
         </Button>
