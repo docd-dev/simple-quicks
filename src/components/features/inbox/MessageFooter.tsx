@@ -1,10 +1,14 @@
+import AutoResizeTextarea from "@/components/AutoResizeTextarea";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useAppStore } from "@/stores/app.stores";
 import Image from "next/image";
+import { useState } from "react";
 
 export default function MessageFooter() {
   const { chatRoom } = useAppStore();
+  const [message, setMessage] = useState("");
+
   return (
     <div className="p-5 pt-6">
       {chatRoom?.isSupport && (
@@ -24,12 +28,14 @@ export default function MessageFooter() {
         </div>
       )}
       <div className="flex items-end gap-3.5">
-        <Textarea
-          placeholder="Type a new message"
-          className="text-base focus-visible:ring-0 focus-visible:outline-none focus-visible:ring-offset-0 border-[#828282] rounded-md placeholder:text-[#333333] px-4 py-3 min-h-10 resize-none"
+        <AutoResizeTextarea
+          id="messageInput"
+          value={message}
+          onChange={setMessage}
+          className="ml-0 px-4 py-3 border-[#828282] border"
           rows={1}
+          placeholder="Type a new message"
         />
-
         <Button size={"lg"} className="min-h-[3.125rem] font-bold text-base">
           Send
         </Button>

@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import { Textarea } from "./ui/textarea";
+import { cn } from "@/lib/utils";
 
 interface AutoResizeTextareaProps {
   id: string;
@@ -7,6 +8,8 @@ interface AutoResizeTextareaProps {
   onChange: (value: string) => void;
   rows?: number;
   maxRows?: number;
+  className?: string;
+  placeholder?: string;
 }
 
 const AutoResizeTextarea: React.FC<AutoResizeTextareaProps> = ({
@@ -15,6 +18,8 @@ const AutoResizeTextarea: React.FC<AutoResizeTextareaProps> = ({
   onChange,
   rows = 2,
   maxRows = 10,
+  className,
+  placeholder,
 }) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -37,11 +42,14 @@ const AutoResizeTextarea: React.FC<AutoResizeTextareaProps> = ({
     <Textarea
       id={id}
       ref={textareaRef}
-      className="ml-1 text-base focus-visible:ring-0 focus-visible:outline-none focus-visible:ring-offset-0 border-[#828282] rounded-md placeholder:text-[#4F4F4F] focus:p-3 focus:border min-h-10 resize-none text-[#4F4F4F] transition-all duration-150 border-0 p-0 overflow-hidden"
+      className={cn(
+        "ml-1 text-base focus-visible:ring-0 focus-visible:outline-none focus-visible:ring-offset-0 border-[#828282] rounded-md placeholder:text-[#4F4F4F] focus:p-3 focus:border min-h-10 resize-none text-[#4F4F4F] transition-all duration-150 border-0 p-0 overflow-hidden",
+        className
+      )}
       rows={rows}
       onChange={handleChange}
       value={value}
-      placeholder="No Description"
+      placeholder={placeholder || "No Description"}
     />
   );
 };

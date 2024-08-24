@@ -1,6 +1,6 @@
 import { Message } from "@/app/constants/message-list";
 import MessageDetailCard from "./MessageDetailCard";
-import { userId } from "@/lib/utils";
+import { sleep, userId } from "@/lib/utils";
 import { DateDivider, NewMessageDivider } from "./Divider";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { DateTime } from "luxon";
@@ -57,14 +57,23 @@ export default function MessageContent({}: MessageContentProps) {
     });
   };
 
-  useEffect(() => {
-    if (!mounted) return;
-    scrollToBottom(chatRef.current);
-  }, [mounted]);
+  const readAll = async (list: Message[]) => {
+    if (!chat) return;
+    await sleep(500);
+    const filterItems = list.map((item) => ({
+      ...item,
+      isNew: false,
+    }));
+
+    setItems(filterItems);
+  };
 
   useEffect(() => {
     if (!mounted) return;
+    scrollToBottom(chatRef.current);
     setItems(chat || []);
+    readAll(chat!);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mounted, chat]);
 
   // HOOK FOR SCROLL EVENT
@@ -76,6 +85,7 @@ export default function MessageContent({}: MessageContentProps) {
     },
     () => {
       // if scroll on the top
+      setIsAtBottom(false);
     },
     () => {
       // if scroll not on the top or bottom
@@ -114,14 +124,16 @@ export default function MessageContent({}: MessageContentProps) {
             </div>
 
             {/* scroll to new message and dissapper after reach bottom */}
-            {!isAtBottom && !chatRoom?.isSupport && (
-              <div
-                className="absolute bottom-0 left-1/2 -translate-x-1/2 px-3 py-2 rounded-[0.313rem] bg-[#E9F3FF] text-[#2F80ED] font-bold cursor-pointer hover:bg-blue-100 duration-150"
-                onClick={() => scrollToBottom(chatRef.current, "smooth")}
-              >
-                New Message
-              </div>
-            )}
+            {!isAtBottom &&
+              !chatRoom?.isSupport &&
+              items.filter((item) => item.isNew).length > 0 && (
+                <div
+                  className="absolute bottom-0 left-1/2 -translate-x-1/2 px-3 py-2 rounded-[0.313rem] bg-[#E9F3FF] text-[#2F80ED] font-bold cursor-pointer hover:bg-blue-100 duration-150"
+                  onClick={() => scrollToBottom(chatRef.current, "smooth")}
+                >
+                  New Message
+                </div>
+              )}
           </div>
           {/* chat footer and input new message */}
           <MessageFooter />
