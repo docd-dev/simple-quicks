@@ -89,14 +89,25 @@ export default function MessageDetailCard({
               </div>
             </PopoverTrigger>
             <PopoverContent className="w-32 rounded-md p-0">
-              <div className="grid divide-y text-base/none">
-                <div className="px-[1.125rem] py-3 text-[#2F80ED] hover:bg-neutral-100 cursor-pointer duration-150">
-                  Edit
+              {isUser ? (
+                <div className="grid divide-y text-base/none">
+                  <div className="px-[1.125rem] py-3 text-[#2F80ED] hover:bg-neutral-100 cursor-pointer duration-150">
+                    Edit
+                  </div>
+                  <div className="px-[1.125rem] py-3 text-[#EB5757] hover:bg-neutral-100 cursor-pointer duration-150">
+                    Delete
+                  </div>
                 </div>
-                <div className="px-[1.125rem] py-3 text-[#EB5757] hover:bg-neutral-100 cursor-pointer duration-150">
-                  Delete
+              ) : (
+                <div className="grid divide-y text-base/none">
+                  <div className="px-[1.125rem] py-3 text-[#2F80ED] hover:bg-neutral-100 cursor-pointer duration-150">
+                    Share
+                  </div>
+                  <div className="px-[1.125rem] py-3 text-[#2F80ED] hover:bg-neutral-100 cursor-pointer duration-150">
+                    Reply
+                  </div>
                 </div>
-              </div>
+              )}
             </PopoverContent>
           </Popover>
         )}
